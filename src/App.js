@@ -89,6 +89,19 @@ const App = () => {
       })
   }
 
+  const handleDelete = (id, title) => {
+    if (window.confirm("Remove blog " + title)) {
+      blogService
+      .deleteBlog(id)
+      .then(response => {
+        setBlogs(blogs.filter((blog) => blog.id !== id))
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  }
+
   if (user === null) {
     return (
       <>
@@ -120,9 +133,8 @@ const App = () => {
       <h2>blogs</h2>
 
       {sortedBlogs.map(blog => 
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} onDelete={handleDelete} />
       )}
-
 
     </div>
   )
