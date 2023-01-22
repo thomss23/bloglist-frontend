@@ -15,12 +15,18 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMeessage, setErrorMessage] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [sortedBlogs, setSortedBlogs] = useState([]);
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
+
+  useEffect(() => {
+    setSortedBlogs(blogs.sort((a, b) => b.likes - a.likes));
+}, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -99,7 +105,7 @@ const App = () => {
         </Togglable>
       </>
     )}
-
+  
   return (
     <div>
       <Notification message={notificationMessage} type='notification'></Notification>
@@ -112,9 +118,12 @@ const App = () => {
       </Togglable>
 
       <h2>blogs</h2>
-      {blogs.map(blog =>
+
+      {sortedBlogs.map(blog => 
         <Blog key={blog.id} blog={blog} />
       )}
+
+
     </div>
   )
 }
