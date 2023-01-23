@@ -15,18 +15,18 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMeessage, setErrorMessage] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
-  const [sortedBlogs, setSortedBlogs] = useState([]);
+  const [sortedBlogs, setSortedBlogs] = useState([])
 
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
-    setSortedBlogs(blogs.sort((a, b) => b.likes - a.likes));
-}, [blogs]);
+    setSortedBlogs(blogs.sort((a, b) => b.likes - a.likes))
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -39,7 +39,7 @@ const App = () => {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -49,7 +49,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       setUser(user)
       setUsername('')
@@ -90,15 +90,15 @@ const App = () => {
   }
 
   const handleDelete = (id, title) => {
-    if (window.confirm("Remove blog " + title)) {
+    if (window.confirm('Remove blog ' + title)) {
       blogService
-      .deleteBlog(id)
-      .then(response => {
-        setBlogs(blogs.filter((blog) => blog.id !== id))
-      })
-      .catch(err => {
-        console.log(err)
-      })
+        .deleteBlog(id)
+        .then(response => {
+          setBlogs(blogs.filter((blog) => blog.id !== id))
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 
@@ -108,31 +108,31 @@ const App = () => {
         <Notification message={errorMeessage} type='error'/>
         <Togglable buttonLabel='login'>
           <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLoginSubmit}
-          errorMessage = {errorMeessage}
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLoginSubmit}
+            errorMessage = {errorMeessage}
           />
         </Togglable>
       </>
     )}
-  
+
   return (
     <div>
       <Notification message={notificationMessage} type='notification'></Notification>
       <p>{`${user.username} logged in`}</p> <button type="button" onClick={handleLogOut}>Logout</button>
 
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm 
+        <BlogForm
           createBlog={createBlog}
         />
       </Togglable>
 
       <h2>blogs</h2>
 
-      {sortedBlogs.map(blog => 
+      {sortedBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} onDelete={handleDelete} />
       )}
 

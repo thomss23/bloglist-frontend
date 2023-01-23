@@ -1,7 +1,7 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({blog, onDelete}) => {
+const Blog = ({ blog, onDelete }) => {
 
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -46,19 +46,19 @@ const Blog = ({blog, onDelete}) => {
       </div>
       <div style={showDetailsWhenVisibleIsFale}>
         <div style={blogStyle}>
-            {blog.title}
-            <br></br>
-            {blog.author}
-            <br></br>
-            <div>
+          {blog.title}
+          <br></br>
+          {blog.author}
+          <br></br>
+          <div>
               likes : {likes}
-              <button onClick={handleBlogUpdate}>like</button>
-            </div>
-            {blog.url}
-            <br></br>
-            <button onClick={toggleVisibility}>hide</button>
-            <br></br>
-            <button onClick={() => onDelete(blog.id, blog.title)}>Remove</button>
+            <button onClick={handleBlogUpdate}>like</button>
+          </div>
+          {blog.url}
+          <br></br>
+          <button onClick={toggleVisibility}>hide</button>
+          <br></br>
+          <button onClick={() => onDelete(blog.id, blog.title)}>Remove</button>
         </div>
       </div>
     </div>
