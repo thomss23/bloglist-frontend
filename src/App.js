@@ -88,7 +88,11 @@ const App = () => {
         }, 5000)
       })
   }
+  const handleBlogUpdate = (blogObject, blogID) => {
+    return blogService
+      .updateBlog(blogObject, blogID)
 
+  }
   const handleDelete = (id, title) => {
     if (window.confirm('Remove blog ' + title)) {
       blogService
@@ -133,7 +137,7 @@ const App = () => {
       <h2>blogs</h2>
 
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} onDelete={handleDelete} />
+        <Blog key={blog.id} blog={blog} onDelete={handleDelete} onUpdate={handleBlogUpdate} />
       )}
 
     </div>
