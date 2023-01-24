@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, onDelete, onUpdate }) => {
+const Blog = ({ blog, onDelete, onUpdate, userid }) => {
 
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -20,10 +20,7 @@ const Blog = ({ blog, onDelete, onUpdate }) => {
   }
 
   const handleBlogUpdate = (event) => {
-    event.preventDefault()
-
     let blogObject = {
-      user: blog.user.id,
       title: blog.title,
       author: blog.author,
       likes: likes + 1
@@ -38,7 +35,7 @@ const Blog = ({ blog, onDelete, onUpdate }) => {
   return (
     <div>
       <div style={hideDetailsWhenVisibleIsTrue}>
-        <div data-testid="blogDetailsoff" style={blogStyle}>
+        <div className='blog-nodetails' data-testid="blogDetailsoff" style={blogStyle}>
           <div>
             {blog.title}
           </div>
@@ -49,7 +46,7 @@ const Blog = ({ blog, onDelete, onUpdate }) => {
         </div>
       </div>
       <div style={showDetailsWhenVisibleIsFale}>
-        <div data-testid="blogDetailson" style={blogStyle}>
+        <div className='blog-withdetails' data-testid="blogDetailson" style={blogStyle}>
           <div>
             {blog.title}
           </div>
