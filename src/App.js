@@ -7,26 +7,27 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import './index.css'
 import Togglable from './components/Togglable'
+import { setBlogs } from './reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMeessage, setErrorMessage] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
-  const [sortedBlogs, setSortedBlogs] = useState([])
 
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      dispatch(setBlogs(blogs))
     )
-  }, [])
+  }, [dispatch])
 
-  useEffect(() => {
-    setSortedBlogs(blogs.sort((a, b) => b.likes - a.likes))
-  }, [blogs])
+  const blogs = useSelector(state => state.blogs)
+  const sortedBlogs = [...blogs]
+  sortedBlogs.sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')

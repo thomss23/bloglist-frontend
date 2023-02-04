@@ -1,5 +1,3 @@
-
-
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,

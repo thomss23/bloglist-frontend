@@ -45,7 +45,7 @@ const BlogForm = ({ createBlog }) => {
       </div>
       <div>
         url
-        <input id='url-input'
+        <input id='url'
           type="text"
           value={url}
           name="Password"
