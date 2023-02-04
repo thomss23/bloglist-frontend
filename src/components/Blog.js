@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, updateBlog } from '../reducers/blogReducer'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog, onDelete, onUpdate, userid }) => {
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
-
   const hideDetailsWhenVisibleIsTrue = { display: visible ? 'none' : '' }
   const showDetailsWhenVisibleIsFale = { display: visible ? '' : 'none' }
 
@@ -19,16 +21,34 @@ const Blog = ({ blog, onDelete, onUpdate, userid }) => {
     setVisible(!visible)
   }
 
-  const handleBlogUpdate = (event) => {
+  const onUpdate = (blogObject, blogID) => {
+    return blogService
+      .updateBlog(blogObject, blogID)
+  }
+
+  const handleDelete = (id, title) => {
+    if (window.confirm('Remove blog ' + title)) {
+      blogService
+        .deleteBlog(id)
+        .then(response => {
+          dispatch(deleteBlog(blog.id))
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
+
+  const handleBlogUpdate = () => {
     let blogObject = {
       title: blog.title,
       author: blog.author,
-      likes: likes + 1
+      likes: blog.likes + 1
     }
 
     onUpdate(blogObject, blog.id)
       .then(returnedBlog => {
-        setLikes(returnedBlog.likes)
+        dispatch(updateBlog(returnedBlog))
       })
   }
 
@@ -56,7 +76,7 @@ const Blog = ({ blog, onDelete, onUpdate, userid }) => {
           </div>
 
           <div>
-              likes : {likes}
+              likes : {blog.likes}
             <button onClick={handleBlogUpdate}>like</button>
           </div>
 
@@ -66,7 +86,7 @@ const Blog = ({ blog, onDelete, onUpdate, userid }) => {
 
           <button onClick={toggleVisibility}>hide</button>
           <br></br>
-          <button onClick={() => onDelete(blog.id, blog.title)}>Remove</button>
+          <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button>
         </div>
       </div>
     </div>

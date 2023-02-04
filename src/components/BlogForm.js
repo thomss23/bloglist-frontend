@@ -1,25 +1,36 @@
-import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { clearNotificationMessage, setNotificationMessage } from '../reducers/notificationReducer'
+import blogService from '../services/blogs'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ handleVisibility }) => {
+  const dispatch = useDispatch()
 
-  const [author, setAuthor] = useState('')
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
+  const createFromObject = (blogObject) => {
+    handleVisibility()
+    blogService
+      .createBlog(blogObject)
+      .then(returnedBlog => {
+        dispatch(createBlog(returnedBlog))
+        dispatch(setNotificationMessage(`Blog with title ${blogObject.title} added`))
+        setTimeout(() => {
+          dispatch(clearNotificationMessage())
+        }, 5000)
+      })
+  }
 
   const handleBlogCreation = (event) => {
     event.preventDefault()
-
     const blogObject = {
-      title: title,
-      author: author,
-      url: url,
+      title: event.target.title.value,
+      author: event.target.author.value,
+      url: event.target.url.value,
     }
+    createFromObject(blogObject)
 
-    createBlog(blogObject)
-
-    setAuthor('')
-    setTitle('')
-    setUrl('')
+    event.target.title.value = ''
+    event.target.author.value = ''
+    event.target.url.value = ''
   }
 
 
@@ -29,27 +40,20 @@ const BlogForm = ({ createBlog }) => {
         title
         <input id='title-input'
           type="text"
-          value={title}
-          name="Username"
-          onChange={({ target }) => setTitle(target.value)}
+          name="title"
         />
       </div>
       <div>
         author
         <input id='author-input'
-          type="text"
-          value={author}
-          name="Password"
-          onChange={({ target }) => setAuthor(target.value)}
+          name="author"
         />
       </div>
       <div>
         url
         <input id='url'
           type="text"
-          value={url}
-          name="Password"
-          onChange={({ target }) => setUrl(target.value)}
+          name="url"
         />
       </div>
       <button type="submit">Create</button>
