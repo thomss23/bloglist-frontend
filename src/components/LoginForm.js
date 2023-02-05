@@ -3,9 +3,11 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { clearNotificationMessage, setNotificationMessage } from '../reducers/notificationReducer'
 import { setUser } from '../reducers/userInfoReducer'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault()
@@ -16,9 +18,7 @@ const LoginForm = () => {
       const user = await loginService.login({
         username, password,
       })
-      console.log(user)
       blogService.setToken(user.token)
-
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
@@ -31,6 +31,12 @@ const LoginForm = () => {
       event.target.username.value = ''
       event.target.password.value = ''
 
+      dispatch(setNotificationMessage('Succesfully logged in'))
+      setTimeout(() => {
+        dispatch(clearNotificationMessage())
+      }, 5000)
+
+      navigate('/')
     } catch (exception) {
       event.target.username.value = ''
       event.target.password.value = ''
@@ -39,13 +45,8 @@ const LoginForm = () => {
       setTimeout(() => {
         dispatch(clearNotificationMessage())
       }, 5000)
-      return
     }
 
-    dispatch(setNotificationMessage('Succesfully logged in'))
-    setTimeout(() => {
-      dispatch(clearNotificationMessage())
-    }, 5000)
   }
 
   return (
