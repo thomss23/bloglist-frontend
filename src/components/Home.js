@@ -4,11 +4,14 @@ import BlogForm from './BlogForm'
 import Notification from './Notification'
 import Togglable from './Togglable'
 
+
+
 const Home = ({ username, notificationMessage, handleLogOut, blogFormRef, handleVisibility, sortedBlogs }) => {
+
   return(
+
     <div>
       <Notification message={notificationMessage} type='notification'></Notification>
-      <p>{`${username} logged in`}</p> <button type="button" onClick={handleLogOut}>Logout</button>
 
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm handleVisibility={handleVisibility}/>

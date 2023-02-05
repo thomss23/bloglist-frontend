@@ -4,7 +4,7 @@ import './index.css'
 import { setBlogs } from './reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from './reducers/userInfoReducer'
-import { Route, Routes, useMatch } from 'react-router-dom'
+import { Link, Route, Routes, useMatch } from 'react-router-dom'
 import Login from './components/Login'
 import Home from './components/Home'
 import Users from './components/Users'
@@ -55,21 +55,30 @@ const App = () => {
   if(!user) {
     return(<Login notificationMessage={notificationMessage}></Login>)
   }
+
+  const padding = {
+    padding: 5
+  }
+
   return(
-    <Routes>
-      <Route path="/" element={
-        <Home username={user.username}
+    <>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+      </div>
+      <Routes>
+        <Route path="/" element={<Home username={user.username}
           notificationMessage={notificationMessage}
           handleLogOut={handleLogOut}
           blogFormRef={blogFormRef}
           handleVisibility={handleVisibility}
-          sortedBlogs={sortedBlogs}/>}
-      />
-      <Route path='/login' element={<Login notificationMessage={notificationMessage}/>}/>
-      <Route path='/users' element={<Users handleLogOut={handleLogOut}></Users>}/>
-      <Route path="/users/:id" element={<User selectedUser={selectedUser} handleLogOut={handleLogOut}/>}/>
-      <Route path="/blogs/:id" element={<Blog blog={selectedBlog} visible={true} handleLogOut={handleLogOut} />}/>
-    </Routes>
+          sortedBlogs={sortedBlogs} />} />
+        <Route path='/login' element={<Login notificationMessage={notificationMessage} />} />
+        <Route path='/users' element={<Users handleLogOut={handleLogOut}></Users>} />
+        <Route path="/users/:id" element={<User selectedUser={selectedUser} handleLogOut={handleLogOut} />} />
+        <Route path="/blogs/:id" element={<Blog blog={selectedBlog} visible={true} handleLogOut={handleLogOut} />} />
+      </Routes>
+    </>
   )
 }
 
