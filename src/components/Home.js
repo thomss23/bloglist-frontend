@@ -1,4 +1,4 @@
-import { List, ListItem } from '@mui/material'
+import { List, ListItem, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import Blog from './Blog'
 import BlogForm from './BlogForm'
@@ -18,7 +18,7 @@ const Home = ({ notificationMessage, blogFormRef, handleVisibility, sortedBlogs 
         <BlogForm handleVisibility={handleVisibility}/>
       </Togglable>
 
-      <h2>blogs</h2>
+      <Typography variant="h4" component="h2" color='blue'>Blogs</Typography>
 
 
       <List

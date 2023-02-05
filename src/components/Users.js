@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -17,11 +17,8 @@ const Users = () => {
 
   return(
     <div>
-      <h1>Blogs</h1>
-
-      <div>
-        {loggedInUser.username} logged in
-      </div>
+      <Typography variant='h3' >Users</Typography>
+      <Typography variant='p' >{loggedInUser.username} logged in</Typography>
 
 
       <TableContainer component={Paper}>

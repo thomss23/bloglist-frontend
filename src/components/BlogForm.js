@@ -1,8 +1,8 @@
+import { Button, TextField } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { clearNotificationMessage, setNotificationMessage } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
-
 const BlogForm = ({ handleVisibility }) => {
   const dispatch = useDispatch()
 
@@ -33,30 +33,38 @@ const BlogForm = ({ handleVisibility }) => {
     event.target.url.value = ''
   }
 
-
   return(
     <form onSubmit={handleBlogCreation}>
-      <div>
-        title
-        <input id='title-input'
-          type="text"
-          name="title"
-        />
-      </div>
-      <div>
-        author
-        <input id='author-input'
-          name="author"
-        />
-      </div>
-      <div>
-        url
-        <input id='url'
-          type="text"
-          name="url"
-        />
-      </div>
-      <button type="submit">Create</button>
+      <TextField
+        label="Title"
+        name="title"
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        label="Author"
+        name="author"
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        label="URL"
+        name="url"
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        margin="normal"
+      >
+        Create
+      </Button>
     </form>
   )
 }

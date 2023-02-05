@@ -1,20 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { Button, Card, CardContent, Typography } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import { updateBlog } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, visible }) => {
   const dispatch = useDispatch()
-  const loggedInUser = useSelector(state => state.userInfo)
-
-  const hideDetailsWhenVisibleIsTrue = { display: visible ? 'none' : '' }
-  const showDetailsWhenVisibleIsFale = { display: visible ? '' : 'none' }
 
   const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+    margin: 10,
+    padding: 10,
+    width: 300
   }
 
   const onUpdate = (blogObject, blogID) => {
@@ -22,22 +17,19 @@ const Blog = ({ blog, visible }) => {
       .updateBlog(blogObject, blogID)
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const handleDelete = (id, title) => {
-    if (window.confirm('Remove blog ' + title)) {
-      blogService
-        .deleteBlog(id)
-        .then(response => {
-          // eslint-disable-next-line no-undef
-          dispatch(deleteBlog(blog.id))
-          // eslint-disable-next-line no-undef
-          navigate('/')
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    }
-  }
+  // const handleDelete = (id, title) => {
+  //   if (window.confirm('Remove blog ' + title)) {
+  //     blogService
+  //       .deleteBlog(id)
+  //       .then(response => {
+  //         dispatch(deleteBlog(blog.id))
+  //         navigate('/')
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //       })
+  //   }
+  // }
 
   const handleBlogUpdate = () => {
     let blogObject = {
@@ -51,52 +43,44 @@ const Blog = ({ blog, visible }) => {
         dispatch(updateBlog(returnedBlog))
       })
   }
+
   if(!blog) return null
+  if(!visible) {
+    return  <Card style={blogStyle}>
+      <CardContent>
+        <Typography variant="h5" component="h2">
+          {blog.title} by {blog.author}
+        </Typography>
+      </CardContent>
+    </Card>
+  }
+
   return (
-    <div>
-      <div style={hideDetailsWhenVisibleIsTrue}>
-        <div className='blog-nodetails' data-testid="blogDetailsoff" style={blogStyle}>
-          <div>
-            {blog.title}
-          </div>
-        </div>
-
-
-      </div>
-      <div style={showDetailsWhenVisibleIsFale}>
-        <div className='blog-withdetails' data-testid="blogDetailson" style={blogStyle}>
-
-          <h2>Blogs</h2>
-
-          <div>
-            {loggedInUser.username} logged in
-          </div>
-
-          <div>
-            {blog.title}
-          </div>
-          <div>
-              likes : {blog.likes}
-            <button onClick={handleBlogUpdate}>like</button>
-          </div>
-          <div>
-            {blog.url}
-          </div>
-          <div>
-            added by {blog.author}
-          </div>
-          <br></br>
-          <h2>comments</h2>
-          <ul>
-            {blog.comments.map(comment => {
-              return <li key={comment}>{comment}</li>
-            })}
-          </ul>
-          {/* {loggedInUser.username === blog.user.username ?  <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button> : <></>} */}
-          {/* <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button> */}
-        </div>
-      </div>
-    </div>
+    <Card style={blogStyle}>
+      <CardContent>
+        <Typography variant="h5" component="h2">
+          {blog.title} by {blog.author}
+        </Typography>
+        <Typography color="textSecondary">
+          Likes: {blog.likes}
+        </Typography>
+        <Button onClick={handleBlogUpdate}>Like</Button>
+        <Typography variant="body2" component="p">
+          URL : {blog.url}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Added by {blog.author}
+        </Typography>
+        <Typography variant="h6" component="h3">
+          Comments:
+        </Typography>
+        <ul>
+          {blog.comments.map(comment => (
+            <li key={comment}>{comment}</li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
   )
 }
 
