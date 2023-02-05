@@ -10,6 +10,8 @@ import Home from './components/Home'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
+import { Container } from '@mui/system'
+import { AppBar, Button, IconButton, Toolbar } from '@mui/material'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -56,16 +58,41 @@ const App = () => {
     return(<Login notificationMessage={notificationMessage}></Login>)
   }
 
-  const padding = {
-    padding: 5
-  }
-
   return(
-    <>
-      <div>
+    <Container>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+          </IconButton>
+          <Button color="inherit" component={Link} to='/users'>
+            {/* <Link to="/users">users</Link> */}
+            users
+          </Button>
+          <Button color="inherit" component={Link} to='/'>
+            {/* <Link to="/">blogs</Link> */}
+            blogs
+          </Button>
+          <Button
+            type="submit"
+            color="inherit"
+            onClick={handleLogOut}>
+            Log out
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+
+      {/* <div>
         <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/users">users</Link>
-      </div>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleLogOut}>
+         Log out
+        </Button>
+      </div> */}
       <Routes>
         <Route path="/" element={<Home username={user.username}
           notificationMessage={notificationMessage}
@@ -78,7 +105,8 @@ const App = () => {
         <Route path="/users/:id" element={<User selectedUser={selectedUser} handleLogOut={handleLogOut} />} />
         <Route path="/blogs/:id" element={<Blog blog={selectedBlog} visible={true} handleLogOut={handleLogOut} />} />
       </Routes>
-    </>
+    </Container>
+
   )
 }
 

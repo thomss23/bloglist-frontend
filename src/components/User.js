@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 
-const User = ({ selectedUser, handleLogOut }) => {
+const User = ({ selectedUser }) => {
   const loggedInUser = useSelector(state => state.userInfo)
   return (
     <div>
@@ -9,8 +9,6 @@ const User = ({ selectedUser, handleLogOut }) => {
       <div>
         {loggedInUser.username} logged in
       </div>
-
-      <button onClick={handleLogOut}>logout</button>
 
       <h1>{selectedUser.username}</h1>
 

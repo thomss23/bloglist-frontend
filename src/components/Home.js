@@ -1,3 +1,4 @@
+import { List, ListItem } from '@mui/material'
 import { Link } from 'react-router-dom'
 import Blog from './Blog'
 import BlogForm from './BlogForm'
@@ -6,12 +7,12 @@ import Togglable from './Togglable'
 
 
 
-const Home = ({ username, notificationMessage, handleLogOut, blogFormRef, handleVisibility, sortedBlogs }) => {
+const Home = ({ notificationMessage, blogFormRef, handleVisibility, sortedBlogs }) => {
 
   return(
 
     <div>
-      <Notification message={notificationMessage} type='notification'></Notification>
+      <Notification message={notificationMessage} type='success'></Notification>
 
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm handleVisibility={handleVisibility}/>
@@ -19,11 +20,24 @@ const Home = ({ username, notificationMessage, handleLogOut, blogFormRef, handle
 
       <h2>blogs</h2>
 
-      {sortedBlogs.map(blog =>
-        <Link key={blog.id} to={`/blogs/${blog.id}`}>
-          <Blog blog={blog} visible={false} />
-        </Link>
-      )}
+
+      <List
+        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        aria-label="blogs">
+
+        {sortedBlogs.map(blog => {
+          return (
+            <ListItem key={blog.id} disablePadding>
+              <Link to={`/blogs/${blog.id}`}>
+                <Blog blog={blog} visible={false} />
+              </Link>
+            </ListItem>
+          )
+        }
+        )}
+
+      </List>
+
     </div>
   )
 

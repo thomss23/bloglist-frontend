@@ -1,10 +1,11 @@
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setUsers } from '../reducers/usersReducer'
 import { getAllUsers } from '../services/users'
 
-const Users = ({ handleLogOut }) => {
+const Users = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -22,29 +23,30 @@ const Users = ({ handleLogOut }) => {
         {loggedInUser.username} logged in
       </div>
 
-      <button onClick={handleLogOut}>logout</button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Users</th>
-            <th>Blogs</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users.map(user => {
-            return (
-              <tr key={user.id}>
-                <td>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Users</TableCell>
+              <TableCell>Blogs</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow
+                key={user.username}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
                   <Link to={`/users/${user.id}`}>{user.username}</Link>
-                </td>
-                <td>{user.blogs.length}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+                </TableCell>
+                <TableCell >{user.blogs.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

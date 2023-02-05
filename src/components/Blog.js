@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateBlog } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, visible, handleLogOut }) => {
+const Blog = ({ blog, visible }) => {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.userInfo)
 
@@ -22,19 +22,22 @@ const Blog = ({ blog, visible, handleLogOut }) => {
       .updateBlog(blogObject, blogID)
   }
 
-  // const handleDelete = (id, title) => {
-  //   if (window.confirm('Remove blog ' + title)) {
-  //     blogService
-  //       .deleteBlog(id)
-  //       .then(response => {
-  //         dispatch(deleteBlog(blog.id))
-  //         navigate('/')
-  //       })
-  //       .catch(err => {
-  //         console.log(err)
-  //       })
-  //   }
-  // }
+  // eslint-disable-next-line no-unused-vars
+  const handleDelete = (id, title) => {
+    if (window.confirm('Remove blog ' + title)) {
+      blogService
+        .deleteBlog(id)
+        .then(response => {
+          // eslint-disable-next-line no-undef
+          dispatch(deleteBlog(blog.id))
+          // eslint-disable-next-line no-undef
+          navigate('/')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
 
   const handleBlogUpdate = () => {
     let blogObject = {
@@ -57,6 +60,8 @@ const Blog = ({ blog, visible, handleLogOut }) => {
             {blog.title}
           </div>
         </div>
+
+
       </div>
       <div style={showDetailsWhenVisibleIsFale}>
         <div className='blog-withdetails' data-testid="blogDetailson" style={blogStyle}>
@@ -66,8 +71,6 @@ const Blog = ({ blog, visible, handleLogOut }) => {
           <div>
             {loggedInUser.username} logged in
           </div>
-
-          <button onClick={handleLogOut}>logout</button>
 
           <div>
             {blog.title}
@@ -83,6 +86,12 @@ const Blog = ({ blog, visible, handleLogOut }) => {
             added by {blog.author}
           </div>
           <br></br>
+          <h2>comments</h2>
+          <ul>
+            {blog.comments.map(comment => {
+              return <li key={comment}>{comment}</li>
+            })}
+          </ul>
           {/* {loggedInUser.username === blog.user.username ?  <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button> : <></>} */}
           {/* <button onClick={() => handleDelete(blog.id, blog.title)}>Remove</button> */}
         </div>
